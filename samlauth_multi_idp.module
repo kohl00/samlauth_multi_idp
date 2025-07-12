@@ -71,7 +71,7 @@ function samlauth_multi_idp_form_samlauth_configure_form_alter(array &$form, For
 /**
  * Implements hook_theme() to create a template for the custom route
  */
-function samlauth_multi_idp_theme() {
+function samlauth_multi_idp_theme($existing, $type, $theme, $path) {
   return [
     'samlauth_idp_login' => [
       'template' => 'samlauth_idp_login',
