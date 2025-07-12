@@ -37,5 +37,5 @@ samlauth_multi_idp.multi_login_form:
     _title: 'Login'
   requirements:
     _user_is_logged_in: 'FALSE'
-      options:
-        _maintenance_access: TRUE
+  options:
+    _maintenance_access: TRUE
