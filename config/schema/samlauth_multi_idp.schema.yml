@@ -23,3 +23,9 @@ samlauth_multi_idp.samlauth_idp.*:
     idp_cert_encryption:
       type: string
       label: 'Encryption certificate'
+    login_link_text:
+      type: string
+      label: 'Login link text'
+    login_link_enabled:
+      type: boolean
+      label: 'Login link enabled'

@@ -51,6 +51,7 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  *     "idp_certs",
  *     "idp_cert_encryption",
  *     "login_link_title",
+ *     "login_link_enabled"
  *   },
  * )
  */
