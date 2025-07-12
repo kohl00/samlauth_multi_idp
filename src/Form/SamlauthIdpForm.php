@@ -66,7 +66,7 @@ class SamlauthIdpForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $this->entity->id(),
       '#machine_name' => [
-        'exists' => '\Drupal\campt_milogin_integration\Entity\MiloginIdp::load',
+        'exists' => '\Drupal\samlauth_multi_idp\Entity\SamlauthIdp::load',
       ],
       '#disabled' => !$this->entity->isNew(),
     ];
