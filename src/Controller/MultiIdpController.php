@@ -10,14 +10,14 @@ use Drupal\Core\Url;
 /**
  * Returns responses for samlauth_multi_idp module routes.
  */
-class SamlController extends ControllerBase {
+class MultiIdpController extends ControllerBase {
 
   /**
    * The entity type manager service.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected EntityTypeManagerInterface $entityTypeManager;
+  protected $entityTypeManager;
 
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
