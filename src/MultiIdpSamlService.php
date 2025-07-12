@@ -461,6 +461,7 @@ class MultiIdpSamlService extends SamlService {
     // (XML) message, and can also set error conditions instead - if the XML
     // contains data that is not considered valid. We should likely treat all
     // error conditions the same.
+
     $auth->processResponse();
     if ($config->get('debug_log_saml_in')) {
       $this->logger->debug('ACS received SAML response: <pre>@message</pre>', ['@message' => $auth->getLastResponseXML()]);
