@@ -1100,7 +1100,6 @@ class MultiIdpSamlService extends SamlService {
    *   The library configuration array.
    */
   protected static function reformatConfig(ImmutableConfig $config, $base_url = '', $purpose = '', KeyRepositoryInterface $key_repository = NULL, SamlauthIdp $idp = NULL) {
-
     $library_config = [
       'debug' => (bool) $config->get('debug_phpsaml'),
       'sp' => [
@@ -1432,7 +1431,7 @@ class MultiIdpSamlService extends SamlService {
       }
     }
     if ($add_idp_cert || ($add_idp_encryption_cert && !$encryption_cert)) {
-      $certs = $config->get('idp_certs') ?? [];
+      $certs = $idp->get('idp_certs') ?? [];
       if ($add_idp_encryption_cert && !$add_idp_cert) {
         $certs = array_slice($certs, 0, 1);
       }

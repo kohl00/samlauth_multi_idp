@@ -30,6 +30,14 @@ final class SamlIdpSubscriber implements EventSubscriberInterface {
         $request->getSession()->set('samlauth_selected_idp', $idp_id);
       }
     }
+
+    if ($request->getPathInfo() === '/saml/reauth') {
+      $idp_id = $request->query->get('saml_idp');
+
+      if ($idp_id) {
+        $request->getSession()->set('samlauth_selected_idp', $idp_id);
+      }
+    }
   }
 
   /**
