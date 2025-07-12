@@ -58,7 +58,7 @@ function samlauth_multi_idp_form_samlauth_configure_form_alter(array &$form, For
         '#suffix' => '</p>',
         '#type' => 'url',
         '#title' => $idp->get('login_link_text'),
-        '#url' => Url::fromRoute([
+        '#url' => Url::fromRoute('samlauth.saml_controller_login', [], [
           'query' => [
             'saml_idp' => $idp->id(),
           ],
