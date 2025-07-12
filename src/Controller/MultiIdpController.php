@@ -2,13 +2,35 @@
 
 namespace Drupal\samlauth_multi_idp\Controller;
 
+use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Url;
+
 /**
  * Returns responses for samlauth_multi_idp module routes.
  */
 class SamlController extends ControllerBase {
 
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
+
   public function login() {
-    $idps = \Drupal::entityTypeManager()->getStorage('samlauth_idp')->loadByProperties([
+    $idps = $this->entityTypeManager->getStorage('samlauth_idp')->loadByProperties([
       'login_link_enabled' => TRUE,
     ]);
 
@@ -20,9 +42,10 @@ class SamlController extends ControllerBase {
       $content['saml_login_links'][] = [
         '#prefix' => '<p>',
         '#suffix' => '</p>',
-        '#type' => 'url',
+        '#type' => 'link',
         '#title' => $idp->get('login_link_text'),
-        '#url' => Url::fromRoute([
+        '#url' => Url::fromRoute('samlauth.saml_controller_login', [],
+          [
           'query' => [
             'saml_idp' => $idp->id(),
           ],
