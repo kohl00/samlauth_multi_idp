@@ -29,3 +29,13 @@ entity.samlauth_idp.delete_form:
     _title: 'Delete an identity provider'
   requirements:
     _permission: 'administer samlauth_idp'
+
+samlauth_multi_idp.multi_login_form:
+  path: '/saml/login/idp'
+  defaults:
+    _controller: '\Drupal\samlauth_multi_idp\Controller\MultiIdpController::login'
+    _title: 'Login'
+  requirements:
+    _user_is_logged_in: 'FALSE'
+      options:
+        _maintenance_access: TRUE
