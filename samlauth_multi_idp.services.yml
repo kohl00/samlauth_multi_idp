@@ -1,0 +1,11 @@
+services:
+  samlauth.saml:
+    class: Drupal\samlauth_multi_idp\MultiIdpSamlService
+    arguments: [ '@externalauth.externalauth', '@externalauth.authmap', '@config.factory', '@entity_type.manager', '@logger.channel.samlauth', '@event_dispatcher', '@request_stack', '@tempstore.private', '@flood', '@current_user', '@messenger', '@string_translation' ]
+    calls:
+      - [ setKeyRepository, [ '@?key.repository' ] ]
+
+  samlauth_multi_idp.event_subscriber:
+    class: Drupal\samlauth_multi_idp\EventSubscriber\SamlIdpSubscriber
+    tags:
+      - { name: event_subscriber }

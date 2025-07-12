@@ -1,0 +1,5 @@
+entity.samlauth_idp.overview:
+  title: Identity Providers
+  parent: samlauth.samlauth_configure_form
+  description: 'List of identity providers to extend site functionality.'
+  route_name: entity.samlauth_idp.collection

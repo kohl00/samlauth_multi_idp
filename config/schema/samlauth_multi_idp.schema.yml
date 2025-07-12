@@ -1,0 +1,25 @@
+samlauth_multi_idp.samlauth_idp.*:
+  type: config_entity
+  label: Identity Provider
+  mapping:
+    idp_entity_id:
+      type: string
+      label: 'Entity ID'
+    idp_single_sign_on_service:
+      type: string
+      label: 'Single Sign-On Service'
+    idp_single_log_out_service:
+      type: string
+      label: 'Single Logout Service'
+    idp_change_password_service:
+      type: string
+      label: 'Change password URL'
+    idp_certs:
+      type: sequence
+      label: 'X.509 certificate(s)'
+      sequence:
+        type: string
+        label: 'Certificate'
+    idp_cert_encryption:
+      type: string
+      label: 'Encryption certificate'

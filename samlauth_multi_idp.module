@@ -1,0 +1,43 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * @file
+ * Primary module hooks for SAML Authentication multi IDP module.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter() to remove some stuff no longer being used.
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *
+ * @return void
+ */
+function samlauth_multi_idp_form_samlauth_configure_form_alter(array &$form, FormStateInterface $form_state) {
+
+  /**
+   * Replaces the original 'identity provider' details panel with a new one
+   * giving some context and a link to where the identity providers are now
+   * configured.
+   */
+  if (array_key_exists('identity_provider', $form)) {
+    $form['identity_provider'] = [
+      '#type' => 'details',
+      '#title' => t('Identity Provider'),
+      '#open' => TRUE,
+    ];
+
+    $form['identity_provider']['description'] = [
+      '#type' => 'markup',
+      '#markup' => '<p><em>' . t('<a href="@link">Identity provider</a> settings have been moved to a dedicated page to support multiple identity providers.', [
+          '@link' =>
+            Url::fromRoute('entity.samlauth_idp.collection')
+              ->toString()
+        ]) . '</em></p>',
+    ];
+  }
+
+}

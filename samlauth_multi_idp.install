@@ -1,0 +1,41 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Install, update and uninstall functions for the SAML Authentication multi IDP module.
+ */
+use Drupal\samlauth_multi_idp\Entity\SamlauthIdp;
+
+/**
+ * Implements hook_install().
+ */
+function samlauth_multi_idp_install(): void {
+  \Drupal::messenger()->addStatus(t('Module SAML Authentication multi IDP has been installed.'));
+  $config = \Drupal::config('samlauth.authentication');
+
+  $storage = \Drupal::entityTypeManager()->getStorage('samlauth_idp');
+
+  if (!$storage->load('default')) {
+    $entity = SamlauthIdp::create([
+      'id' => 'default',
+      'label' => 'Default Identity Provider',
+      'idp_entity_id' => $config->get('idp_entity_id') ?? 'Set me',
+      'idp_single_sign_on_service' => $config->get('idp_single_sign_on_service') ?? 'Set me',
+      'idp_single_log_out_service' => $config->get('idp_single_log_out_service') ?? 'Set me',
+      'idp_change_password_service' => $config->get('idp_change_password_service') ?? 'Set me',
+      'idp_certs' => $config->get('idp_certs') ?? [],
+      'idp_cert_encryption' => $config->get('idp_cert_encryption') ?? '',
+    ]);
+
+    $entity->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function samlauth_multi_idp_uninstall(): void {
+  \Drupal::messenger()->addStatus(t('Module SAML Authentication multi IDP has been uninstalled.'));
+}

@@ -1,0 +1,7 @@
+name: 'SAML Authentication multi IDP'
+type: module
+description: 'Provides multi IDP support for the SAML Authentication module.'
+package: User Authentication
+core_version_requirement: ^10 || ^11
+dependencies:
+  - samlauth:samlauth

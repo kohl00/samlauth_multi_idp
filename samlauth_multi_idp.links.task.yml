@@ -1,0 +1,5 @@
+entity.idp.collection:
+  title: 'Identity Providers'
+  route_name: entity.samlauth_idp.collection
+  base_route: samlauth.samlauth_configure_form
+  weight: 0
