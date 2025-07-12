@@ -40,4 +40,30 @@ function samlauth_multi_idp_form_samlauth_configure_form_alter(array &$form, For
     ];
   }
 
+  /**
+   * Implements hook_form_FORM_ID_alter() to generate login links for the configured identity providers.
+   */
+  function samlauth_multi_idp_form_user_login_form_alter(&$form, FormStateInterface $form_state) {
+    $idps = \Drupal::entityTypeManager()->getStorage('samlauth_idp')->loadByProperties([
+      'login_link_enabled' => TRUE,
+    ]);
+
+    $form['saml_login_links'] = [
+      '#type' => 'container',
+    ];
+
+    foreach ($idps as $idp) {
+      $form['saml_login_links'][] = [
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+        '#type' => 'url',
+        '#title' => $idp->get('login_link_text'),
+        '#url' => Url::fromRoute([
+          'query' => [
+            'saml_idp' => $idp->id(),
+          ],
+        ]),
+      ];
+    }
+  }
 }
