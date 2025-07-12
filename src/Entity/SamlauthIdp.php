@@ -50,7 +50,7 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  *     "idp_change_password_service",
  *     "idp_certs",
  *     "idp_cert_encryption",
- *     "login_link_title",
+ *     "login_link_text",
  *     "login_link_enabled"
  *   },
  * )
@@ -100,11 +100,11 @@ final class SamlauthIdp extends ConfigEntityBase implements SamlauthIdpInterface
   /**
    * The status (boolean) of the login link.
    */
-  protected bool $login_link_enabled;
+  protected ?bool $login_link_enabled;
 
   /**
-   * The link title to use on the /user/login page.
+   * The link text to use on the /user/login page.
    */
-  protected string $login_link_title;
+  protected ?string $login_link_text;
 
 }

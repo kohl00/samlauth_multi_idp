@@ -352,14 +352,14 @@ class SamlauthIdpForm extends EntityForm {
       '#open' => TRUE,
     ];
 
-    $form['login_link'] = [
+    $form['login_link']['login_link_enabled'] = [
       '#type' => 'boolean',
       '#title' => $this->t('Link Enabled'),
-      '#description' => this->t('Whether this link should appear on the login pages.'),
+      '#description' => $this->t('Whether this link should appear on the login pages.'),
       '#default_value' => $this->entity->get('login_link_enabled'),
     ];
 
-    $form['login_link'] = [
+    $form['login_link']['login_link_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Login Link Text'),
       '#description' => $this->t('The link text to use for this login link.'),
