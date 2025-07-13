@@ -95,3 +95,60 @@ function samlauth_multi_idp_entity_type_alter(array &$entity_types) {
     $entity_types['samlauth_idp']->setStorageClass('Drupal\samlauth_multi_idp\SamlauthIdpStorage');
   }
 }
+
+function samlauth_multi_idp_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'runtime') {
+    $default_idp = \Drupal::entityTypeManager()->getStorage('samlauth_idp')->load('default');
+
+    if (!$default_idp) {
+      $requirements['samlauth_idp_exists'] = [
+        'title' => t('Default Identity Provider'),
+        'value' => t('Missing'),
+        'severity' => REQUIREMENT_ERROR,
+        'description' => t('The default identity provider (ID "default") is missing. This identity provider is required for proper multi IdP usage. You must manually create a new identity provider with the "default" ID.'),
+      ];
+      return $requirements;
+    }
+
+    $required_fields = [
+      'idp_entity_id',
+      'idp_single_sign_on_service',
+      'idp_single_log_out_service',
+      'idp_certs',
+      'idp_cert_encryption',
+    ];
+
+    $invalid_fields = [];
+
+    foreach ($required_fields as $field) {
+      $value = $default_idp->{$field} ?? NULL;
+      if (empty($value) || $value === 'Set me') {
+        $invalid_fields[] = $field;
+      }
+    }
+
+    if (!empty($invalid_fields)) {
+      $requirements['samlauth_idp_incomplete'] = [
+        'title' => t('Default Identity Provider configuration'),
+        'value' => t('Incomplete'),
+        'severity' => REQUIREMENT_WARNING,
+        'description' => t('The default identity provider is not set up correctly. Missing or placeholder values found for: @fields.', [
+          '@fields' => implode(', ', $invalid_fields),
+        ]),
+      ];
+    }
+    else {
+      $requirements['samlauth_idp_complete'] = [
+        'title' => t('Default Identity Provider configuration'),
+        'value' => t('Complete'),
+        'severity' => REQUIREMENT_OK,
+        'description' => t('The default identity provider is properly configured.'),
+      ];
+    }
+
+    return $requirements;
+  }
+
+}
