@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\samlauth_multi_idp\Entity;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
 
 /**
@@ -12,6 +14,7 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  *
  * @ConfigEntityType(
  *   id = "samlauth_idp",
+ *   storage = "Drupal\samlauth_multi_idp\SamlauthIdpStorage",
  *   label = @Translation("Identity Provider"),
  *   label_collection = @Translation("Identity Providers"),
  *   label_singular = @Translation("identity provider"),
@@ -25,7 +28,7 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  *     "form" = {
  *       "add" = "Drupal\samlauth_multi_idp\Form\SamlauthIdpForm",
  *       "edit" = "Drupal\samlauth_multi_idp\Form\SamlauthIdpForm",
- *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
+ *       "delete" = "Drupal\samlauth_multi_idp\Form\SamlauthIdpDeleteForm",
  *     },
  *   },
  *   config_prefix = "samlauth_idp",
@@ -56,6 +59,11 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  * )
  */
 final class SamlauthIdp extends ConfigEntityBase implements SamlauthIdpInterface {
+
+  /**
+   * ID of the protected entity that cannot be deleted.
+   */
+  const PROTECTED_ENTITY_ID = 'default';
 
   /**
    * The identity provider ID.
@@ -107,4 +115,33 @@ final class SamlauthIdp extends ConfigEntityBase implements SamlauthIdpInterface
    */
   protected ?string $login_link_text;
 
+  /**
+   * Prevent the default entity from being able to be deleted.
+   *
+   * @param $operation
+   * @param AccountInterface|NULL $account
+   * @param $return_as_object
+   * @return mixed
+   */
+  public function access($operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    if ($operation === 'delete' && $this->id() === self::PROTECTED_ENTITY_ID) {
+      $result = AccessResult::forbidden()->addCacheableDependency($this);
+      return $return_as_object ? $result : $result->isAllowed();
+    }
+
+    return parent::access($operation, $account, $return_as_object);
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getOperations() {
+    $operations = parent::getOperations();
+
+    if ($this->id() === self::PROTECTED_ENTITY_ID) {
+      unset($operations['delete']);
+    }
+
+    return $operations;
+  }
 }

@@ -82,3 +82,16 @@ function samlauth_multi_idp_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_entity_type_alter().
+ * This hook forces the SamlauthIdp entity to use the custom storage class we provided.
+ *
+ * (HINT: This was due to an issue with the storage declaration in the entity class not
+ * being picked up correctly)
+ */
+function samlauth_multi_idp_entity_type_alter(array &$entity_types) {
+  if (isset($entity_types['samlauth_idp'])) {
+    $entity_types['samlauth_idp']->setStorageClass('Drupal\samlauth_multi_idp\SamlauthIdpStorage');
+  }
+}
