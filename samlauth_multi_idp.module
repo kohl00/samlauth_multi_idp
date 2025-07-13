@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
@@ -54,6 +55,8 @@ function samlauth_multi_idp_form_user_login_form_alter(&$form, FormStateInterfac
     '#type' => 'container',
   ];
 
+  $cache_metadata = new CacheableMetadata();
+
   foreach ($idps as $idp) {
     $form['saml_login_links'][] = [
       '#prefix' => '<p>',
@@ -66,7 +69,11 @@ function samlauth_multi_idp_form_user_login_form_alter(&$form, FormStateInterfac
         ],
       ]),
     ];
+
+    $cache_metadata->addCacheableDependency($idp);
   }
+
+  $cache_metadata->applyTo($form);
 }
 
 /**
