@@ -2,6 +2,7 @@
 
 namespace Drupal\samlauth_multi_idp\Controller;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -38,6 +39,8 @@ class MultiIdpController extends ControllerBase {
       '#type' => 'container',
     ];
 
+    $cache_metadata = new CacheableMetadata();
+
     foreach ($idps as $idp) {
       $content['saml_login_links'][] = [
         '#prefix' => '<p>',
@@ -51,11 +54,15 @@ class MultiIdpController extends ControllerBase {
           ],
         ]),
       ];
+
+      $cache_metadata->addCacheableDependency($idp);
     }
+
+    $cache_metadata->applyTo($content['saml_login_links']);
 
     $build = [
       '#theme' => 'samlauth_idp_login',
-      '#content' => $content,
+      '#content' => $content['saml_login_links'],
     ];
 
     return $build;
