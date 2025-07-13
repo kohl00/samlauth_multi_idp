@@ -96,6 +96,11 @@ function samlauth_multi_idp_entity_type_alter(array &$entity_types) {
   }
 }
 
+/**
+ * Implements hook_requirements().
+ * Ensures that the default identity provider is present, and that it is it not using default values.
+ *
+ */
 function samlauth_multi_idp_requirements($phase) {
   $requirements = [];
 
@@ -123,7 +128,7 @@ function samlauth_multi_idp_requirements($phase) {
     $invalid_fields = [];
 
     foreach ($required_fields as $field) {
-      $value = $default_idp->{$field} ?? NULL;
+      $value = $default_idp->get($field) ?? NULL;
       if (empty($value) || $value === 'Set me') {
         $invalid_fields[] = $field;
       }
