@@ -20,6 +20,7 @@ use Drupal\samlauth\Event\SamlauthUserLinkEvent;
 use Drupal\samlauth\Event\SamlauthUserSyncEvent;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\samlauth\SamlService;
+use Drupal\samlauth\UserVisibleException;
 use Drupal\samlauth_multi_idp\Entity\SamlauthIdp;
 use Drupal\user\UserInterface;
 use OneLogin\Saml2\Auth;
