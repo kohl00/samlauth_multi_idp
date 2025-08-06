@@ -48,6 +48,7 @@ use Drupal\samlauth_multi_idp\SamlauthIdpInterface;
  *     "id",
  *     "label",
  *     "idp_entity_id",
+ *     "sp_entity_id",
  *     "idp_single_sign_on_service",
  *     "idp_single_log_out_service",
  *     "idp_change_password_service",
@@ -79,6 +80,11 @@ final class SamlauthIdp extends ConfigEntityBase implements SamlauthIdpInterface
    * The example description.
    */
   protected string $idp_entity_id;
+
+  /**
+   * The SP entity ID.
+   */
+  protected ?string $sp_entity_id;
 
   /**
    * The single sign on service URL.

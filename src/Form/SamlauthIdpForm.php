@@ -128,6 +128,13 @@ class SamlauthIdpForm extends EntityForm {
       '#default_value' => $this->entity->get('idp_entity_id'),
     ];
 
+    $form['sp_entity_id'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('SP Entity ID'),
+      '#description' => $this->t('The identifier representing the SP. This overrides the global SP Entity ID.'),
+      '#default_value' => $this->entity->get('sp_entity_id'),
+    ];
+
     $form['idp_single_sign_on_service'] = [
       '#type' => 'url',
       '#title' => $this->t('Single Sign On Service'),
@@ -448,6 +455,7 @@ class SamlauthIdpForm extends EntityForm {
 
     foreach ([
       'idp_entity_id',
+      'sp_entity_id',
       'idp_single_sign_on_service',
       'idp_single_log_out_service',
       'idp_change_password_service',
