@@ -39,3 +39,12 @@ samlauth_multi_idp.multi_login_form:
     _user_is_logged_in: 'FALSE'
   options:
     _maintenance_access: TRUE
+
+samlauth_multi_idp.saml_metadata:
+  path: '/saml/metadata/{samlauth_idp}'
+  defaults:
+    _controller: '\Drupal\samlauth_multi_idp\Controller\MultiIdpController::metadata'
+  requirements:
+    _access: 'TRUE'
+  options:
+    _maintenance_access: TRUE

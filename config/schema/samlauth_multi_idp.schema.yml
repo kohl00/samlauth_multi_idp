@@ -5,6 +5,9 @@ samlauth_multi_idp.samlauth_idp.*:
     idp_entity_id:
       type: string
       label: 'Entity ID'
+    sp_entity_id:
+      type: string
+      label: 'SP Entity ID'
     idp_single_sign_on_service:
       type: string
       label: 'Single Sign-On Service'

@@ -214,7 +214,9 @@ class MultiIdpSamlService extends SamlService {
    *   (Optional) number of seconds used for the 'cacheDuration' property of
    *   the metadata. If left empty, the SAML PHP Toolkit will assign a value.
    * @param bool $allow_invalid
-   *   (Optional) also return metadata if it cannot be validated.
+  *   (Optional) also return metadata if it cannot be validated.
+   * @param \Drupal\samlauth_multi_idp\Entity\SamlauthIdp|null $idp
+   *   (Optional) IdP configuration used to generate SP metadata.
    *
    * @return mixed
    *   XML string representing metadata.
@@ -222,11 +224,11 @@ class MultiIdpSamlService extends SamlService {
    * @throws \OneLogin\Saml2\Error
    *   If the metatdad is invalid.
    */
-  public function getMetadata($validity = NULL, $cache_duration = NULL, bool $allow_invalid = FALSE) {
+  public function getMetadata($validity = NULL, $cache_duration = NULL, bool $allow_invalid = FALSE, ?SamlauthIdp $idp = NULL) {
     // It's actually strange how we need to instantiate an Auth object when
     // we only need the Settings object. We may refactor that when refactoring
     // getSamlAuth().
-    $settings = $this->getSamlAuth('metadata')->getSettings();
+    $settings = $this->getSamlAuth('metadata', TRUE, $idp)->getSettings();
     $metadata = $settings->getSPMetadata(FALSE, $validity, $cache_duration);
     if (!$allow_invalid) {
       $errors = $settings->validateMetadata($metadata);
@@ -1105,7 +1107,7 @@ class MultiIdpSamlService extends SamlService {
     $library_config = [
       'debug' => (bool) $config->get('debug_phpsaml'),
       'sp' => [
-        'entityId' => $config->get('sp_entity_id'),
+        'entityId' => $idp->get('sp_entity_id') ?: $config->get('sp_entity_id'),
         'assertionConsumerService' => [
           // See ExecuteInRenderContextTrait if curious why the long chained
           // call is necessary.
