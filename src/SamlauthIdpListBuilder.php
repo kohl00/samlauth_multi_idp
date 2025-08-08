@@ -6,6 +6,7 @@ namespace Drupal\samlauth_multi_idp;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 
 /**
  * Provides a listing of identity providers.
@@ -28,7 +29,14 @@ final class SamlauthIdpListBuilder extends ConfigEntityListBuilder {
     /** @var \Drupal\samlauth_multi_idp\SamlauthIdpInterface $entity */
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
-    return $row + parent::buildRow($entity);
+    $row = $row + parent::buildRow($entity);
+
+    $row['operations']['data']['#links']['metadata'] = [
+      'title' => $this->t('Metadata'),
+      'url' => Url::fromRoute('samlauth_multi_idp.saml_metadata', ['samlauth_idp' => $entity->id()]),
+    ];
+
+    return $row;
   }
 
 }
